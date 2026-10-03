@@ -2,28 +2,30 @@
 <style>
 :root{--bg:#e9ecef;--fg:#1b1d20;--card:#fff;--lcd:#c5d3a8;--lcdf:#1d2a12}
 [data-t=dark]{--bg:#121416;--fg:#e9ecef;--card:#22262a;--lcd:#9fb184}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px system-ui,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 nav{display:flex;position:sticky;top:0;background:var(--card);z-index:2}
-nav button{flex:1;padding:14px 2px;border:0;background:none;color:var(--fg);font-weight:700;font-size:12px;border-bottom:3px solid transparent}
+nav button{flex:1;padding:14px 2px;border:0;background:none;color:var(--fg);font-weight:700;font-size:10.5px;border-bottom:3px solid transparent}
 nav .on{border-color:#e8a317}
 main{max-width:420px;margin:0 auto;padding:10px}
 section{display:none}section.on{display:block}
+.i{width:1.2em;height:1.2em;vertical-align:-.2em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .dev{background:#17181a;border:2px solid #2d2f33;border-radius:10px;padding:10px}
 .top{display:flex;justify-content:space-between;color:#9a9da3;font:700 11px sans-serif;letter-spacing:3px;padding:0 4px 6px}
 .lcd{background:var(--lcd);color:var(--lcdf);font:700 14px/1.5 ui-monospace,monospace;border:3px solid #111;border-radius:4px;height:186px;padding:4px 6px 30px;overflow:hidden;position:relative}
 .lcd .sel{background:var(--lcdf);color:var(--lcd);padding:0 3px}
 .lcd .hd{border-bottom:1px solid;font-size:12px;margin-bottom:2px;white-space:nowrap;overflow:hidden}
-.lcd .ht{font-size:11px;font-weight:400;opacity:.8}
+.lcd .ht{font-size:11px;font-weight:400}
+.lcd .hr{display:flex;justify-content:space-between;align-items:center;height:30px}
 .lcd .m{position:absolute;left:6px;right:6px;bottom:3px;border-top:1px solid;padding-top:2px;font-size:12px;min-height:22px}
-.big{font-size:26px;line-height:1.3}
+.big{font-size:26px;line-height:1.3;text-align:center}
 .row{display:flex;gap:6px;margin-top:8px}
-.row button{flex:1;min-height:46px;background:#222428;border:1px solid #3c3f44;border-radius:4px;color:#eee;font-size:17px;font-weight:700}
+.row button{flex:1;min-height:48px;background:#222428;border:1px solid #3c3f44;border-radius:4px;color:#eee;font-size:15px;font-weight:700}
 .row .ok{background:#e8a317;color:#111}
-.bt button{font-size:15px}
-.sl{flex:3;background:#101113;border:1px solid #33363a;border-radius:3px;color:#777;font:11px sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;min-height:46px}
+.row .dk{font-size:16px}.row .dk .i{width:22px;height:22px}
+.sl{flex:3;background:#101113;border:1px solid #33363a;border-radius:3px;color:#777;font:11px sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px}
 .sl.in{color:#8f8;border-color:#3c3}.sl.rd{color:#fc3;border-color:#fc3}
-.act{margin-top:8px;color:#9a9da3;font:11px sans-serif}.act .row{margin-top:4px}.act button{font-size:20px;min-height:42px}.act .on{outline:3px solid #e8a317}
+.bn{display:none;margin-top:10px;background:var(--card);border-radius:10px;padding:10px;font-size:14px}.bn .row{flex-wrap:wrap}.bn .row button{flex:1 1 30%;background:#e8a317;color:#111;font-size:12px;min-height:40px}.set button{margin:2px}
 .ex{margin-top:10px;width:100%;padding:12px;border-radius:10px;border:0;background:var(--card);color:var(--fg);font-size:15px;font-weight:700}
 .mod{position:fixed;inset:0;background:#000a;display:none;align-items:flex-end;z-index:5}.mod.on{display:flex}
 .mod div{background:var(--card);padding:18px;border-radius:18px 18px 0 0;width:100%;max-height:80%;overflow:auto;line-height:1.5}
@@ -33,136 +35,230 @@ h3{margin:16px 0 4px}
 .set{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--card);padding:12px;border-radius:10px;margin:8px 0}
 .set input{font-size:14px;max-width:190px}
 </style></head><body>
-<nav><button class=on onclick=tab(0)>ТАХОГРАФ</button><button onclick=tab(1)>ДОВІДНИК</button><button onclick=tab(2)>НАЛАШТУВАННЯ</button></nav>
+<nav><button class=on onclick=tab(0)>ТАХОГРАФ</button><button onclick=tab(1)>СИТУАЦІЇ</button><button onclick=tab(2)>ДОВІДНИК</button><button onclick=tab(3)>ПОМИЛКИ</button><button onclick=tab(4)>ПРАКТИКА</button></nav>
 <main>
 <section class=on id=s0>
 <div class=dev>
 <div class=top><span>ТАХОГРАФ</span><span>СИМУЛЯТОР</span></div>
 <div class=lcd><div id=scr></div><div class=m id=msg></div></div>
-<div class=row><button onclick="key('back')">↩</button><button onclick="key('up')">▲</button><button onclick="key('down')">▼</button><button class=ok onclick="key('ok')">OK</button></div>
-<div class="row bt"><div class=sl id=sl1 onclick=card(1)></div><button onclick=card(1)>👤1</button><button onclick=card(2)>👤2</button><div class=sl id=sl2 onclick=card(2)></div></div>
-<div class=act>Діяльність водія 1:<div class=row id=ab></div></div>
+<div class=row><button onclick="key('back')">НАЗАД</button><button onclick="key('up')">▲</button><button onclick="key('down')">▼</button><button class=ok onclick="key('ok')">OK</button></div>
+<div class=row><div class=sl id=sl1></div><button class=dk id=d1></button><button class=dk id=d2></button><div class=sl id=sl2></div></div>
 </div>
+<div class=bn id=bn><span id=bt2></span><div class=row><button onclick=what()>Що сталося?</button><button onclick=fix()>Виправити</button><button onclick=chk()>Перевірити</button><button onclick=sol()>Рішення</button><button onclick=rep()>Повторити</button><button onclick=exitScn()>Вийти</button></div></div>
 <button class=ex onclick=expl()>ⓘ Пояснення</button>
 </section>
-<section id=s1><p><i>Навчальні пояснення. Це не юридична порада: функції залежать від версії тахографа та чинного законодавства.</i></p><div id=hb></div></section>
-<section id=s2>
+<section id=s1><div id=sl></div></section>
+<section id=s2><p><i>Навчальні пояснення. Це не юридична порада: функції залежать від версії тахографа та чинного законодавства. Кнопка водія: коротке натискання — діяльність, довге (понад 2 секунди) — вилучити карту.</i></p><div id=hb></div></section>
+<section id=s4><div id=el></div></section>
+<section id=s3>
+<div class=set><span id=tn></span></div><div class=set style="flex-wrap:wrap"><button onclick="shift(-3600000)">−1 год</button><button onclick="shift(3600000)">+1 год</button><button onclick="shift(21600000)">+6 год</button><button onclick="shift(43200000)">+12 год</button><button onclick="shift(86400000)">+1 день</button><button onclick="shift(172800000)">+2 дні</button><button onclick="shift(259200000)">+3 дні</button><button onclick="shift(604800000)">+7 днів</button></div><div class=set style="flex-wrap:wrap">Створити ситуацію:<button onclick="mkSit(1)">Вилучити карту 1 без країни</button><button onclick="mkSit(2)">Вилучити карту 2 без країни</button><button onclick="mkSit(3)">Вилучити карту 1 і +1 день</button></div>
+<div class=set style="flex-wrap:wrap"><b>Створити стан:</b><input type=datetime-local id=cdt><select id=cdr><option value=1>Водій 1<option value=2>Водій 2</select><select id=ccd><option value=2>Карта вставлена<option value=0>Карта вилучена</select><select id=cac><option value=drive>Керування<option value=work>Інша робота<option value=avail>Доступність<option value=rest>Відпочинок</select><select id=ccn></select><button onclick=mkState()>Створити</button></div>
 <div class=set>Звук<button id=bs onclick="tog('snd')"></button></div>
 <div class=set>Тема<button id=bt onclick="tog('dark')"></button></div>
 <div class=set>Час симулятора<button id=ba onclick="tog('auto')"></button></div>
 <div class=set><input type=datetime-local id=dt><button onclick=setT()>Встановити час</button></div>
-<div class=set>Скинути стан симулятора<button onclick=reset()>Скинути</button></div>
+<div class=set>Скинути симуляцію<button onclick=reset()>Скинути</button></div><div class=set>Скинути все навчання<button onclick=resetAll()>Скинути</button></div>
 </section>
 </main>
 <div class=mod id=mod onclick="if(event.target==this)this.classList.remove('on')"><div><h3 id=mt></h3><p id=ms></p><button onclick="mod.classList.remove('on')">Закрити</button></div></div>
 <script>
-const $=s=>document.querySelector(s),K='tachoUA2',p=n=>String(n).padStart(2,'0');
-const MODES={drive:['🚛','Керування'],work:['⚒️','Інша робота'],avail:['⏳','Доступність'],rest:['🛏️','Відпочинок']},MK=Object.keys(MODES);
+
+const $=s=>document.querySelector(s),K='tachoUA5',p=n=>String(n).padStart(2,'0');
+const SV={drive:'<circle cx=12 cy=12 r=9 /><circle cx=12 cy=12 r=2 /><path d="M3 12h7M14 12h7M12 14v7"/>',work:'<path d="M5 20L15 8M19 20L9 8M3 6h8M13 6h8"/>',avail:'<rect x=4 y=4 width=16 height=16 /><path d="M4 20L20 4"/>',rest:'<path d="M2 18V6M2 14h20v4M22 14v-3a3 3 0 0 0-3-3h-7v6"/><circle cx=6 cy=10 r=2 />',card:'<rect x=3 y=5 width=18 height=14 rx=2 /><rect x=6 y=9 width=5 height=4 /><path d="M14 10h4M14 14h4"/>',ferry:'<path d="M3 15l2 5h14l2-5zM7 15V9h10v6M10 9V5h4v4"/>',warn:'<path d="M12 3L2 21h20z"/><path d="M12 10v5M12 18v.5"/>',q:'<path d="M9 9a3 3 0 1 1 4 3c-1 .6-1 1.5-1 2.5M12 18v.5"/>',info:'<circle cx=12 cy=12 r=9 /><path d="M12 11v6M12 7.5v.5"/>'};
+const I=(k,s)=>`<svg class=i viewBox="0 0 24 24"${s?` style="width:${s}px;height:${s}px"`:''}>${SV[k]}</svg>`;
+const N={drive:'Керування',work:'Інша робота',avail:'Доступність',rest:'Відпочинок'},MK=Object.keys(N),ML=()=>MK.map(k=>I(k)+' '+N[k]);
 const CN=['Австрія','Албанія','Бельгія','Білорусь','Болгарія','Боснія і Герцеговина','Велика Британія','Греція','Данія','Естонія','Ірландія','Ісландія','Іспанія','Італія','Латвія','Литва','Люксембург','Молдова','Нідерланди','Німеччина','Норвегія','Польща','Португалія','Румунія','Сербія','Словаччина','Словенія','Угорщина','Україна','Фінляндія','Франція','Хорватія','Чехія','Чорногорія','Швейцарія','Швеція'];
-const MENU=[['Ручне введення','manual'],['Початок країни','cstart'],['Кінець країни','cend'],['Пором / поїзд','ferry'],['Режим діяльності','mode'],['Інформація','info']];
-const R=[[1,31],[1,12],[2020,2040],[0,23],[0,59],[0,3]],MS=['Дата: день','Дата: місяць','Дата: рік','Час: години','Час: хвилини','Діяльність'];
-const EX={
-home:['Головний екран','Показує час і дату симулятора, поточний режим (символ), початок і кінець країни. Натисніть OK — відкриється меню. Карти вставляються кнопками 👤1 і 👤2.'],
-menu:['Меню','▲▼ — вибір пункту, OK — відкрити, ↩ — на головний екран. Угорі дисплея завжди видно, де ви зараз.'],
-manual:['Ручне введення','Вносить діяльність, яка не записалась автоматично (наприклад, поки карти не було). Проходьте поля: ▲▼ змінюють, OK — далі, ↩ — назад.'],
-mdate:['Ручне введення: дата','Виберіть день, місяць і рік початку періоду. ▲▼ змінюють значення, OK — наступне поле, ↩ — попереднє.'],
-mtime:['Ручне введення: час','Виберіть години й хвилини початку періоду. ▲▼ змінюють, OK — далі.'],
-mact:['Ручне введення: діяльність','Що ви робили в цей період: 🚛 керування, ⚒️ інша робота, ⏳ доступність, 🛏️ відпочинок. Виберіть ▲▼ і натисніть OK.'],
-mok:['Ручне введення: підтвердження','Перевірте введене. OK — підтвердити й завершити, ↩ — повернутися та виправити.'],
-cstart:['Початок країни','Країна, де ви починаєте робочий день. ▲▼ — вибір зі списку, OK — зберегти. Це окреме значення від кінця країни.'],
-cend:['Кінець країни','Країна, де ви завершуєте робочий день. Зберігається окремо від початку країни.'],
-ferry:['Пором / поїзд','Окремий стан: активний або неактивний. OK перемикає стан. Використовується, коли автомобіль перевозять поромом чи поїздом.'],
-mode:['Режим діяльності','Виберіть ▲▼ і натисніть OK: 🚛 керування, ⚒️ інша робота, ⏳ доступність, 🛏️ відпочинок. Потрібна вставлена карта 1.'],
-info:['Інформація','Показує стан карт, режим, країни, пором/поїзд і час симулятора.'],
-read:['Зчитування карти','Тахограф читає карту. Зачекайте кілька секунд — потім карта стане активною.'],
-askman:['Ручне введення після вставлення','Після вставлення карти тахограф пропонує внести діяльність за період, коли карти не було. «Так» — почати введення, «Ні» — пропустити.']};
+const MENU=['Друк','Введення','Дисплей'],SUBN=['Водій 1','Водій 2','Автомобіль'],FN=[['Початок країни','Кінець країни','Ручне введення','Інші функції'],['Початок країни','Кінець країни','Ручне введення','Інші функції'],['Пором / поїзд','Інші функції']];
+const R=[[1,31],[1,12],[2020,2040],[0,23],[0,59],[0,3]];
 const F=[
-['Вставлення карти водія','Карта — ваш особистий електронний «ключ» водія.','Щоб тахограф записував діяльність саме вам.','Натисніть 👤1 (або слот поруч). Для другого водія — 👤2.','Дисплей: «Зчитування картки…», далі «Карта активна» і запит про ручне введення. Слот стає зеленим.','Початок зміни: вставили карту, відповіли на запит, обрали початок країни.'],
-['Виймання карти','Завершення роботи з картою.','Щоб закінчити зміну й забрати карту.','Натисніть 👤1 ще раз, коли карта активна.','Дисплей: «Карту вийнято», слот порожній, екран головний.','Кінець зміни: виберіть кінець країни, потім вийміть карту.'],
-['Режими діяльності','Чотири стани: 🚛 керування, ⚒️ інша робота, ⏳ доступність, 🛏️ відпочинок.','Щоб час записувався у правильну категорію.','Меню → Режим діяльності → ▲▼ → OK. Або кнопки діяльності під пристроєм.','Символ на головному екрані змінюється, режим зберігається.','Стоїте на розвантаженні — виберіть ⚒️ «Інша робота».'],
-['Ручне введення','Внесення діяльності за період, який тахограф не записав.','Щоб без прогалин показати, що ви робили.','Меню → Ручне введення. Дата ▲▼ OK → час ▲▼ OK → діяльність ▲▼ OK → підтвердити OK.','Після підтвердження введення завершується, режим оновлюється. ↩ повертає на крок назад.','Карту вставили зранку, а до цього відпочивали — вносите 🛏️.'],
-['Початок країни','Країна, де починається ваш робочий день.','Для обліку країни початку зміни.','Меню → Початок країни → ▲▼ → OK.','Головний екран показує «Поч.: …». Кінець країни не змінюється.','Зміну починаєте в Польщі — виберіть «Польща».'],
-['Кінець країни','Країна, де завершується робочий день.','Для обліку країни кінця зміни.','Меню → Кінець країни → ▲▼ → OK.','Головний екран показує «Кін.: …». Початок країни не змінюється.','Зміну завершуєте в Німеччині — виберіть «Німеччина».'],
-['Пором / поїзд','Стан, коли авто перевозять поромом або поїздом.','Щоб тахограф знав про такий період.','Меню → Пором / поїзд → OK (повторне OK вимикає).','Дисплей: «Пором/поїзд активний» або «неактивний». На головному екрані при активному — 🚢.','Заїхали на пором — активуйте; з’їхали — вимкніть.'],
-['Меню і навігація','Список функцій, що відкривається з головного екрана.','Щоб знайти потрібну функцію.','OK на головному екрані → ▲▼ → OK. ↩ — на крок назад.','Верхній рядок дисплея показує шлях: «Меню › …».','Меню › Початок країни › вибір країни.'],
-['Час симулятора','Власний час симулятора, не час телефону.','Щоб усі дії відбувались у заданий вами час.','Налаштування → «Час симулятора»: задайте дату й час, можна вмикати/вимикати автоматичний хід.','Головний екран і ручне введення беруть цей час.','Ставите 08:00 і тренуєте ручне введення на цей ранок.']];
-const FL=['Що це означає','Для чого використовується','Що натискати','Що відбувається після натискання','Приклад'];
+['Кнопки Driver 1 / Driver 2','Кнопки водія 1 і водія 2. Кожен водій має окрему карту, діяльність і країни.','Щоб працювати з картою та діяльністю свого водія.','Без карти — коротко натисніть: карта вставляється. З картою: коротке натискання — вибір діяльності; утримуйте кнопку понад 2 секунди — вилучення карти.','Вставлення, вибір діяльності або вилучення карти відповідного водія.','Водій 2 сів у кабіну: коротко натискає Driver 2 і вставляє свою карту.'],
+['Вставлення карти','Карта — особистий електронний «ключ» водія.','Щоб тахограф записував діяльність саме цього водія.','Коротко натисніть Driver 1 або Driver 2 (або слот). Далі: OK на екрані «Останнє вилучення», потім Так/Ні на «Ручне введення?».','«Зчитування картки» → «Ласкаво просимо» → останнє вилучення → «Ручне введення?» → «Початок країни?» → робочий екран. Під час зчитування кнопки не працюють.','Початок зміни: вставили карту → Ні → Початок країни → Так → вибір країни → OK.'],
+['Вилучення карти','Завершення роботи з картою.','Щоб закінчити зміну.','Утримуйте Driver 1 (або 2) понад 2 секунди. «Кінець країни?» → Так → ▲▼ → OK.','Кінець країни записується саме цьому водію, карта вилучається. Якщо активний пором/поїзд — він завершується.','Кінець зміни: утримуєте Driver 1 → Так → Німеччина → OK.'],
+['Діяльність','Керування, інша робота, доступність, відпочинок.','Щоб час записувався у правильну категорію.','Коротко натисніть Driver 1 (або 2) → ▲▼ (або ще раз Driver) → OK.','Символ діяльності цього водія на головному екрані змінюється.','Розвантаження: Driver 1 → «Інша робота» → OK.'],
+['Меню та його рівні','Меню має рівні: категорія → водій/автомобіль → функція.','Щоб знайти потрібну функцію, як на реальному тахографі.','OK на головному екрані → ▲▼ → OK (категорія: Друк, Введення, Дисплей) → ▲▼ → OK (Водій 1, Водій 2, Автомобіль) → ▲▼ → OK (функція). Назад — на рівень вище.','Верхній рядок дисплея показує, де ви зараз.','Меню → Введення → Водій 2 → Початок країни.'],
+['Введення (водій / автомобіль)','Розділ для ручних дій окремого водія або автомобіля.','Щоб внести дані, яких тахограф не знає сам.','Меню → Введення → Водій 1 / Водій 2 (потрібна карта) або Автомобіль.','Водій: Початок країни, Кінець країни, Ручне введення. Автомобіль: Пором / поїзд. «Інші функції» поки недоступні.','Меню → Введення → Автомобіль → Пором / поїзд.'],
+['Ручне введення','Внесення діяльності за період, який тахограф не записав (від останнього вилучення карти).','Щоб не було прогалин у записах.','Після карти: «Ручне введення?» → Так. Або Меню → Введення → Водій → Ручне введення. Для кожного періоду: діяльність → кінець (дата, час) → підтвердження; потім країна. ▲▼ змінюють, OK — далі, Назад — крок назад.','Після підтвердження діяльність і початок країни цього водія оновлюються.','Карту вставили зранку, ніч відпочивали: «Відпочинок», дата й час вилучення, країна, OK.'],
+['Початок країни','Країна, де водій починає робочий день.','Для обліку країни початку зміни цього водія.','Після карти: «Початок країни?» → Так. Або Меню → Введення → Водій → Початок країни. ▲▼ → OK.','Записується лише вибраному водію. Кінець країни не змінюється.','Водій 1 починає в Польщі — «Польща».'],
+['Кінець країни','Країна, де водій завершує робочий день.','Для обліку країни кінця зміни цього водія.','Під час вилучення карти: «Кінець країни?» → Так. Або Меню → Введення → Водій → Кінець країни. ▲▼ → OK.','Записується лише цьому водію.','Водій 2 завершує в Німеччині — «Німеччина».'],
+['Пором / поїзд','Період, коли авто перевозять поромом або поїздом (функція автомобіля).','Щоб тахограф знав про такий період.','Меню → Введення → Автомобіль → Пором / поїзд → «Початок» → OK. Наприкінці — той самий шлях і «Кінець».','Поки активний, на головному екрані символ порома. Завершується сам при вилученні карти або після руху понад 1 хвилину.','Заїхали на пором — «Початок»; з’їхали — «Кінець».'],
+['Друк і Дисплей','Друк роздруківок і перегляд даних.','Щоб надрукувати або переглянути дані.','Меню → Друк (недоступно в симуляторі). Меню → Дисплей → Водій 1 / Водій 2 / Автомобіль — перегляд стану.','Друк: «Недоступно». Дисплей: екран зі станом.','Меню → Дисплей → Водій 1.'],
+['Повідомлення і попередження','Рядок унизу дисплея: символ «i» — інформація, трикутник — увага.','Щоб тахограф повідомив результат або проблему.','Нічого натискати не треба — зникає саме.','Приклад: «Карту 1 вилучено» (інформація), «Немає карти» (увага).','Ручне введення без карти → «Немає карти».']];
+F.push(['Навчальні ситуації','Готові завдання у вкладці «Ситуації».','Щоб тренуватися на типових випадках.','Вкладка «Ситуації» → Почати. Під тахографом: Перевірити результат, Показати рішення, Повторити, Вийти.','Ситуація запускається окремо від вільної практики; після виходу ваш стан повертається.','«Після двох днів відпочинку».']);
+const FL=['Що це означає','Для чого використовується','Що натискати на тахографі','Що відбувається після натискання','Приклад'];
+const EK={read:1,welc:1,last:1,askman:6,askcs:7,askend:2,act:3,menu:4,sub:4,fn:5,manual:6,cstart:7,cend:8,ferry:9,info:10};
 const B=[
-['↩ Назад','Крок назад: у меню — на головний екран, у ручному введенні — до попереднього поля.'],
-['▲ (Вгору)','Переміщення вгору списком або збільшення значення поля.'],
-['▼ (Вниз)','Переміщення вниз списком або зменшення значення поля.'],
-['OK','Вибір пункту, перехід до наступного поля, підтвердження. На головному екрані відкриває меню.'],
-['👤1 Водій 1','Кнопка першого водія: вставляє карту 1, а коли карта активна — виймає її.'],
-['👤2 Водій 2','Те саме для карти другого водія.'],
-['Слот карти','Місце, де «лежить» карта. Темний — порожній, жовтий — зчитування, зелений — карта активна.'],
-['Дисплей','Малий монохромний екран. Угорі — де ви (режим або шлях меню), посередині — дані, внизу — повідомлення (ℹ інформація, ⚠ увага). Виділений пункт — темна смуга.'],
-['Кнопки діяльності','Чотири кнопки під пристроєм: швидко змінюють режим водія 1 (🚛 ⚒️ ⏳ 🛏️). Потрібна карта 1.']];
-const Y=[
-['🚛','Керування','Ви ведете автомобіль.','Символ біля часу; угорі «Режим: Керування».'],
-['⚒️','Інша робота','Робота, що не є керуванням: завантаження, огляд, документи.','Символ біля часу; угорі «Режим: Інша робота».'],
-['⏳','Доступність','Ви готові до роботи, але зараз не працюєте безперервно (наприклад, очікуєте).','Символ біля часу; угорі «Режим: Доступність».'],
-['🛏️','Відпочинок','Період відпочинку.','Символ біля часу; угорі «Режим: Відпочинок».'],
-['🚢','Пором / поїзд','Авто перевозять поромом або поїздом.','Рядок «Пором/поїзд активний» на головному екрані.'],
-['👤1 / 👤2','Карта водія','Карта першого або другого водія.','Слот зелений, коли карта активна.'],
-['ℹ','Інформація','Звичайне повідомлення.','Рядок внизу дисплея.'],
-['⚠','Увага','Дія неможлива або потрібна ваша увага (наприклад, немає карти).','Рядок внизу дисплея.']];
-const fresh=()=>({c1:0,c2:0,mode:'rest',ferry:0,startCountry:'',endCountry:'',scr:'home',i:0,kind:'cstart',sim:Date.UTC(2026,9,2,8,0),auto:1,snd:1,dark:0});
-let S;try{S=Object.assign(fresh(),JSON.parse(localStorage[K]));S.scr='home';S.i=0;if(S.c1==1)S.c1=2;if(S.c2==1)S.c2=2}catch(e){S=fresh()}
-let man=null,mt,AC;
+['Назад','Крок назад: з меню — на головний екран, у ручному введенні — до попереднього кроку.'],
+['▲ (Вгору)','Рух вгору списком або збільшення значення.'],
+['▼ (Вниз)','Рух вниз списком або зменшення значення.'],
+['OK','Вибір пункту, наступний крок, підтвердження. На головному екрані відкриває меню.'],
+['Водій 1','Без карти: вставляє карту. З картою: коротке натискання — вибір діяльності, довге (понад 2 секунди) — вилучити карту.'],
+['Водій 2','Те саме для карти водія 2.'],
+['Слот карти','Темний — порожній, жовтий — зчитування, зелений — карта активна.'],
+['Дисплей','Малий монохромний екран. Виділений пункт — темна смуга. Внизу — повідомлення.']];
+const Y=[['drive','Керування','Ви ведете автомобіль.','Символ керма на головному екрані.'],['work','Інша робота','Робота, що не є керуванням: завантаження, огляд, документи.','Символ перехрещених інструментів.'],['avail','Доступність','Ви готові до роботи, але зараз не працюєте безперервно.','Квадрат із діагоналлю.'],['rest','Відпочинок','Період відпочинку.','Символ ліжка.'],['ferry','Пором / поїзд','Авто перевозять поромом чи поїздом.','Символ порома, коли стан активний.'],['card','Карта водія','Карта водія 1 або 2.','Символ карти замість діяльності, коли карти немає.'],['info','Інформація','Звичайне повідомлення.','Внизу дисплея.'],['warn','Увага','Дія неможлива або потрібна ваша увага.','Внизу дисплея.']];
+const dr=()=>({c:0,mode:'rest',sc:'',ec:'',last:0,unk:0});
+const fresh=()=>({d:[null,dr(),dr()],ferry:0,fd:0,fs:0,er:0,log:[],scn:0,free:'',scr:'home',i:0,cat:1,sub:0,kind:'cstart',ad:1,ej:0,sim:Date.UTC(2026,9,2,8,0),auto:1,snd:1,dark:0});
+let S;try{S=Object.assign(fresh(),JSON.parse(localStorage[K]));S.scr='home';S.i=0;S.ej=0;for(const n of[1,2])if(S.d[n].c==1)S.d[n].c=2}catch(e){S=fresh()}
+let man=null,mt,AC;const D=n=>S.d[n];
 const save=()=>{try{localStorage[K]=JSON.stringify(S)}catch(e){}};
 function beep(){if(!S.snd)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator();o.frequency.value=880;o.connect(AC.destination);o.start();o.stop(AC.currentTime+.06)}catch(e){}}
-function say(t,w){$('#msg').textContent=(w?'⚠ ':'ℹ ')+t;beep();clearTimeout(mt);mt=setTimeout(()=>$('#msg').textContent='',2800)}
-const hd=s=>`<div class=hd>${s}</div>`;
+function say(t,w){$('#msg').innerHTML=I(w?'warn':'info',14)+' '+t;beep();clearTimeout(mt);mt=setTimeout(()=>$('#msg').innerHTML='',2800)}
+const hd=s=>`<div class=hd>${s}</div>`,sh=s=>s?s.slice(0,8):'—',Y2=['—','…','є'];
 function list(a,i){const s=Math.max(0,Math.min(i-1,a.length-4));return a.slice(s,s+4).map((t,k)=>`<div class="${s+k==i?'sel':''}">${t}</div>`).join('')}
-const T=()=>{const d=new Date(S.sim);return[d.getUTCDate(),d.getUTCMonth()+1,d.getUTCFullYear(),d.getUTCHours(),d.getUTCMinutes()]};
+const T=ms=>{const d=new Date(ms==null?S.sim:ms);return[d.getUTCDate(),d.getUTCMonth()+1,d.getUTCFullYear(),d.getUTCHours(),d.getUTCMinutes()]};
+const fmt=ms=>{const t=T(ms);return`${p(t[0])}.${p(t[1])}.${t[2]} ${p(t[3])}:${p(t[4])}`};
+const dsym=n=>D(n).c==2?I(D(n).mode,30)+(D(n).unk?I('q',30):''):`<span style="opacity:.35">${I('card',30)}</span>`;
+const fnL=()=>FN[S.sub];
 function render(){
-const sc=S.scr,t=T();let h='';
-if(sc=='home')h=hd('Режим: '+MODES[S.mode][1])+`<div class=big>${p(t[3])}:${p(t[4])} ${MODES[S.mode][0]}</div><div>${p(t[0])}.${p(t[1])}.${t[2]}</div><div>Поч.: ${S.startCountry||'—'}</div><div>Кін.: ${S.endCountry||'—'}</div>${S.ferry?'<div>🚢 Пором/поїзд активний</div>':''}`;
-else if(sc=='menu')h=hd('Меню')+list(MENU.map(m=>m[0]),S.i);
-else if(sc=='country')h=hd('Меню › '+(S.kind=='cstart'?'Початок':'Кінець')+' країни')+list(CN,S.i);
-else if(sc=='mode')h=hd('Меню › Режим діяльності')+list(MK.map(k=>MODES[k][0]+' '+MODES[k][1]),S.i);
-else if(sc=='read')h=hd('Карта водія '+S.rd)+'<div>Зчитування картки…</div><div class=big>▪ ▪ ▪</div>';
-else if(sc=='askman')h=hd('Карта водія 1 активна')+'<div>Ручне введення?</div>'+list(['Так','Ні'],S.i);
-else if(sc=='ferry')h=hd('Меню › Пором / поїзд')+`<div class=big>${S.ferry?'🚢 Активний':'Неактивний'}</div><div>Пором/поїзд ${S.ferry?'активний':'неактивний'}</div><div class=ht>OK — ${S.ferry?'вимкнути':'увімкнути'}</div>`;
-else if(sc=='info')h=hd('Меню › Інформація')+`<div>Карта 1: ${['відсутня','…','активна'][S.c1]} Карта 2: ${['відсутня','…','активна'][S.c2]}</div><div>Режим: ${MODES[S.mode][1]}</div><div>Поч.: ${S.startCountry||'—'}</div><div>Кін.: ${S.endCountry||'—'}</div><div>Пором: ${S.ferry?'активний':'неактивний'}</div>`;
-else if(sc=='manual'){const f=man.f,s=man.s,F=(k,v)=>s==k?`<span class=sel>${v}</span>`:v;
-h=hd(`Меню › Ручне введення ${Math.min(s+1,6)}/6`)+(s==6?`<div>${p(f[0])}.${p(f[1])}.${f[2]} ${p(f[3])}:${p(f[4])}</div><div>${MODES[MK[f[5]]][0]} ${MODES[MK[f[5]]][1]}</div><div class=sel>OK — підтвердити</div><div class=ht>↩ — виправити</div>`:`<div>Дата: ${F(0,p(f[0]))}.${F(1,p(f[1]))}.${F(2,f[2])}</div><div>Час: ${F(3,p(f[3]))}:${F(4,p(f[4]))}</div><div>Діяльність: ${F(5,MODES[MK[f[5]]][0]+' '+MODES[MK[f[5]]][1])}</div><div class=ht>${MS[s]} · ▲▼ змінити · OK далі</div>`)}
+const sc=S.scr,t=T(),d=D(S.ad);let h='';
+if(sc=='home')h=`<div class=hr>${dsym(1)}<span>${S.ferry?I('ferry',30):''}</span>${dsym(2)}</div><div class=big>${p(t[3])}:${p(t[4])}</div><div>${WD[new Date(S.sim).getUTCDay()]} ${p(t[0])}.${p(t[1])}.${t[2]}</div><div>В1 ${sh(D(1).sc)} › ${sh(D(1).ec)}</div><div>В2 ${sh(D(2).sc)} › ${sh(D(2).ec)}</div>`;
+else if(sc=='menu')h=hd('Меню')+list(MENU,S.i);
+else if(sc=='sub')h=hd('Меню › '+MENU[S.cat])+list(SUBN,S.i);
+else if(sc=='fn')h=hd('Введення › '+SUBN[S.sub])+list(fnL(),S.i);
+else if(sc=='country')h=hd((S.ej?'Вилучення':'Введення')+' В'+S.ad+' › '+(S.kind=='cstart'?'Початок':'Кінець'))+list(CN,S.i);
+else if(sc=='act')h=hd('Діяльність водія '+S.ad)+list(ML(),S.i);
+else if(sc=='read')h=hd('Карта водія '+S.ad)+'<div>Зчитування картки…</div><div class=big>▪ ▪ ▪</div>';
+else if(sc=='welc')h=hd('Карта водія '+S.ad)+`<div class=big>${I('card',34)}</div><div class=big style="font-size:16px">Ласкаво просимо</div>`;
+else if(sc=='last')h=hd('Карта водія '+S.ad)+`<div>Останнє вилучення:</div><div>${d.last?fmt(d.last):'— (нова карта)'}</div><div class=ht>OK — далі</div>`;
+else if(sc=='askman')h=hd('Карта водія '+S.ad)+'<div>Ручне введення?</div>'+list(['Так','Ні'],S.i);
+else if(sc=='askcs')h=hd('Карта водія '+S.ad)+'<div>Початок країни?</div>'+list(['Так','Ні'],S.i);
+else if(sc=='askend')h=hd('Вилучення карти '+S.ad)+'<div>Кінець країни?</div>'+list(['Так','Ні'],S.i);
+else if(sc=='ferry')h=hd('Введення › Автомобіль › Пором')+`<div>${I('ferry',20)} ${S.ferry?'Активний':'Неактивний'}</div>`+list(['Початок','Кінець'],S.i);
+else if(sc=='info'){const n=S.sub+1,x=D(n);h=S.sub==2?hd('Дисплей › Автомобіль')+`<div>Час: ${fmt()}</div><div>Пором/поїзд: ${S.ferry?'активний':'неактивний'}</div><div>Карти: 1 ${Y2[D(1).c]}  2 ${Y2[D(2).c]}</div>`:hd('Дисплей › Водій '+n)+`<div>Карта: ${Y2[x.c]}</div><div>${I(x.mode)} ${N[x.mode]}</div><div>Поч.: ${x.sc||'—'}</div><div>Кін.: ${x.ec||'—'}</div>`}
+else if(sc=='manual'){const f=man.f,s=man.s,F=(k,v)=>s==k+1?`<span class=sel>${v}</span>`:v,H=hd(`В${man.n} › Ручне введення`);
+h=s==0?H+`<div class=ht>Період з ${fmt(man.cur)}</div>`+list(ML(),f[5]):s==7?H+'<div class=ht>Початок країни</div>'+list(CN,man.ci):s==6?H+`<div>${I(MK[f[5]])} ${N[MK[f[5]]]}</div><div>${fmt(man.cur)}</div><div>→ ${fmt(Date.UTC(f[2],f[1]-1,f[0],f[3],f[4]))}</div><div class=sel>OK — підтвердити</div>`:H+`<div class=ht>Кінець періоду</div><div>Дата: ${F(0,p(f[0]))}.${F(1,p(f[1]))}.${F(2,f[2])}</div><div>Час: ${F(3,p(f[3]))}:${F(4,p(f[4]))}</div>`}
 $('#scr').innerHTML=h;
-for(const n of[1,2]){const c=S['c'+n],e=$('#sl'+n);e.textContent=['слот карти '+n,'Зчитування…','Карта '+n+' ✔'][c];e.className='sl'+(c==2?' in':c==1?' rd':'')}
-$('#ab').innerHTML=MK.map(k=>`<button class="${S.mode==k?'on':''}" onclick="setMode('${k}')">${MODES[k][0]}</button>`).join('');
+for(const n of[1,2]){const c=D(n).c,e=$('#sl'+n);e.innerHTML=c==2?I('card',22)+' '+n:c==1?'Зчитування…':'СЛОТ '+n;e.className='sl'+(c==2?' in':c==1?' rd':'');$('#d'+n).innerHTML=I('card')+' '+n}
 $('#bs').textContent=S.snd?'Увімк.':'Вимк.';$('#bt').textContent=S.dark?'Темна':'Світла';$('#ba').textContent=S.auto?'Іде':'Стоїть';
-document.documentElement.dataset.t=S.dark?'dark':'';save()}
-function setMode(k){if(S.c1!=2)return say('Карта не вставлена',1);S.mode=k;say('Режим: '+MODES[k][1]);render()}
-function startMan(){man={s:0,f:[...T(),0]};S.scr='manual'}
-function card(n){const c='c'+n;if(S[c]==1)return;
-if(S[c]==2){S[c]=0;say('Карту '+n+' вийнято');if(n==1)S.scr='home'}
-else{S[c]=1;S.scr='read';S.rd=n;say('Карту '+n+' вставлено');setTimeout(()=>{S[c]=2;say('Карта '+n+' активна');S.scr='home';if(n==1){S.scr='askman';S.i=0}render()},2200)}
+document.documentElement.dataset.t=S.dark?'dark':'';ui();save()}
+function startMan(n,from){const l=D(n).last,f=[...T(),3];man={n,s:l&&l<S.sim?0:7,f,from,cur:l||S.sim,la:0,ci:Math.max(0,CN.indexOf(D(n).sc))};S.scr='manual'}
+function endFerry(auto){S.ferry=0;S.fd=0;if(auto)say('Пором/поїзд завершено автоматично')}
+function insert(n){const d=D(n);d.c=1;S.scr='read';S.ad=n;say('Карту '+n+' вставлено');
+setTimeout(()=>{S.scr='welc';render();setTimeout(()=>{d.c=2;S.scr='last';render()},1500)},2000);render()}
+function eject(n){const d=D(n);d.c=0;d.last=S.sim;S.ej=0;S.scr='home';if(S.ferry)endFerry(1);say('Карту '+n+' вилучено');render()}
+function dkey(n,long){const d=D(n);if(d.c==1||['read','welc','last','askman','askcs','manual'].includes(S.scr))return;
+if(!d.c){if(!long)insert(n);return}
+if(long){S.scr='askend';S.ad=n;S.i=0}
+else if(S.scr=='act'&&S.ad==n)S.i=(S.i+1)%4;
+else{S.scr='act';S.ad=n;S.i=MK.indexOf(d.mode)}
 render()}
-function key(k){const sc=S.scr;if(sc=='read')return;const L={menu:6,country:CN.length,mode:4,askman:2},dir=k=='up'?-1:k=='down'?1:0;
+function bind(id,n){const e=$(id);let t,f;e.onpointerdown=()=>{f=0;t=setTimeout(()=>{f=1;dkey(n,1)},2100)};e.onpointerup=()=>{clearTimeout(t);if(!f)dkey(n,0)};e.onpointerleave=e.onpointercancel=()=>clearTimeout(t);e.oncontextmenu=v=>v.preventDefault()}
+function key(k){const sc=S.scr;if(sc=='read'||sc=='welc')return;
+const L={menu:3,sub:3,fn:FN[S.sub].length,country:CN.length,act:4,askman:2,askcs:2,askend:2,ferry:2},dir=k=='up'?-1:k=='down'?1:0;
 if(dir&&L[sc])S.i=(S.i+dir+L[sc])%L[sc];
-else if(dir&&sc=='manual'){if(man.s<6){const r=R[man.s],n=r[1]-r[0]+1;man.f[man.s]=r[0]+(man.f[man.s]-r[0]+dir+n)%n}}
-else if(k=='back'){if(sc=='manual')man.s>0?man.s--:S.scr='menu';else if(['menu','askman'].includes(sc))S.scr='home';else if(sc!='home')S.scr='menu'}
+else if(dir&&sc=='manual'){const s=man.s;if(s==7)man.ci=(man.ci+dir+CN.length)%CN.length;else if(s<6){const j=s?s-1:5,r=R[j],n=r[1]-r[0]+1;man.f[j]=r[0]+(man.f[j]-r[0]+dir+n)%n}}
+else if(k=='back'){if(sc=='manual')man.s>0&&man.s<7?man.s--:S.scr=man.from;else if(sc=='country')S.scr=S.ej?'home':'fn';else if(sc=='ferry')S.scr='fn';else if(sc=='info'||sc=='fn')S.scr='sub';else if(sc=='sub')S.scr='menu';else if(sc!='home'&&sc!='last')S.scr='home';if(S.scr=='home')S.ej=0}
 else if(k=='ok'){
 if(sc=='home'){S.scr='menu';S.i=0}
-else if(sc=='menu'){const t=MENU[S.i][1];
-if(t=='manual')S.c1==2?startMan():say('Карта не вставлена',1);
-else if(t=='cstart'||t=='cend'){S.kind=t;S.scr='country';S.i=Math.max(0,CN.indexOf(t=='cstart'?S.startCountry:S.endCountry))}
-else if(t=='mode'){S.scr='mode';S.i=MK.indexOf(S.mode)}
-else S.scr=t}
-else if(sc=='country'){const s=S.kind=='cstart';S[s?'startCountry':'endCountry']=CN[S.i];say((s?'Початок: ':'Кінець: ')+CN[S.i]);S.scr='home'}
-else if(sc=='mode'){if(S.c1==2){S.mode=MK[S.i];say('Режим: '+MODES[S.mode][1]);S.scr='home'}else say('Карта не вставлена',1)}
-else if(sc=='ferry'){S.ferry^=1;say(S.ferry?'Пором/поїзд активний':'Пором/поїзд неактивний');S.scr='home'}
-else if(sc=='askman'){S.i==0?startMan():S.scr='home'}
-else if(sc=='manual'){if(man.s<6)man.s++;else{S.mode=MK[man.f[5]];say('Введення завершено');S.scr='home'}}
-else if(sc=='info')S.scr='menu'}
+else if(sc=='menu'){S.cat=S.i;S.scr='sub';S.i=0}
+else if(sc=='sub'){S.sub=S.i;if(S.cat==0)say('Друк недоступний',1);else if(S.cat==2)S.scr='info';else{S.scr='fn';S.i=0}}
+else if(sc=='fn'){const i=S.i;
+if(S.sub==2){if(i==0){S.scr='ferry';S.i=0}else say('Недоступно',1)}
+else if(i==3)say('Недоступно',1);
+else if(D(S.sub+1).c!=2)say('Немає карти',1);
+else if(i==2)startMan(S.sub+1,'fn');
+else{S.ad=S.sub+1;S.kind=i?'cend':'cstart';S.scr='country';S.i=Math.max(0,CN.indexOf(D(S.ad)[i?'ec':'sc']))}}
+else if(sc=='country'){const s=S.kind=='cstart';D(S.ad)[s?'sc':'ec']=CN[S.i];say((s?'Початок: ':'Кінець: ')+CN[S.i]);S.ej?eject(S.ad):S.scr='home'}
+else if(sc=='act'){D(S.ad).mode=MK[S.i];say(N[MK[S.i]]);S.scr='home'}
+else if(sc=='ferry'){if(S.i==0){S.ferry?say('Вже активний',1):(S.ferry=1,S.fs++,S.fd=0,say('Пором/поїзд: початок'),S.scr='home')}else{S.ferry?(endFerry(),say('Пором/поїзд: кінець'),S.scr='home'):say('Не активний',1)}}
+else if(sc=='last'){S.scr='askman';S.i=0}
+else if(sc=='askman'){if(S.i==0)startMan(S.ad,'home');else{if(D(S.ad).last&&D(S.ad).last<S.sim)D(S.ad).unk=1;S.scr='askcs';S.i=0}}
+else if(sc=='askcs'){if(S.i==0){S.kind='cstart';S.scr='country';S.i=Math.max(0,CN.indexOf(D(S.ad).sc))}else S.scr='home'}
+else if(sc=='askend'){if(S.i==0){S.kind='cend';S.ej=1;S.scr='country';S.i=Math.max(0,CN.indexOf(D(S.ad).ec))}else eject(S.ad)}
+else if(sc=='manual'){if(man.s<6)man.s++;else if(man.s==6){const f=man.f,e=Date.UTC(f[2],f[1]-1,f[0],f[3],f[4]);if(e<=man.cur||e>S.sim-S.sim%6e4){say('Невірний час',1);S.er++;man.s=1}else{S.log.push({n:man.n,a:MK[f[5]],f:man.cur,t:e});man.la=f[5];man.cur=e;if(e<S.sim-S.sim%6e4){man.f=[...T(),f[5]];man.s=0}else man.s=7}}else{const d=D(man.n);if(man.la!=null&&S.log.some(x=>x.n==man.n))d.mode=MK[man.la];d.sc=CN[man.ci];d.unk=0;say('Введення завершено');S.scr='home'}}
+else if(sc=='info')S.scr='sub'}
 render()}
-function expl(){const sc=S.scr;let k=sc=='menu'?MENU[S.i][1]:sc=='country'?S.kind:sc=='manual'?['mdate','mdate','mdate','mtime','mtime','mact','mok'][man.s]:sc;const e=EX[k]||EX.home;$('#mt').textContent='ⓘ '+e[0];$('#ms').textContent=e[1];$('#mod').classList.add('on')}
-function tab(n){document.querySelectorAll('nav button').forEach((b,i)=>b.classList.toggle('on',i==n));document.querySelectorAll('section').forEach((s,i)=>s.classList.toggle('on',i==n));if(n==2)$('#dt').value=new Date(S.sim).toISOString().slice(0,16)}
+function expl(){const s=S.scr,k=s=='country'?(S.ej?'askend':S.kind):s,f=s=='home'&&(D(1).unk||D(2).unk)?[ER[0][1],ER[0][2],0,ER[0][5]]:F[EK[k]];mdl('ⓘ '+(f?f[0]:'Головний екран'),f?f[1]+' '+f[3]:'Показує символи діяльності водіїв 1 і 2 (або символ карти, якщо карти немає), час, дату та країни кожного водія. OK — меню. Driver 1 / Driver 2 — карта й діяльність.')}
+function tab(n){document.querySelectorAll('nav button').forEach((b,i)=>b.classList.toggle('on',i==n));document.querySelectorAll('section').forEach((s,i)=>s.classList.toggle('on',i==n));if(n==4)$('#dt').value=new Date(S.sim).toISOString().slice(0,16)}
 function tog(k){S[k]^=1;render()}
 function setT(){const v=Date.parse($('#dt').value+':00Z');if(isNaN(v))return alert('Вкажіть дату і час');S.sim=v;render()}
-function reset(){if(confirm('Скинути стан симулятора?')){const s=[S.snd,S.dark];S=fresh();[S.snd,S.dark]=s;man=null;render();tab(0)}}
-const D=(t,b)=>`<details><summary>${t}</summary>${b}</details>`;
-$('#hb').innerHTML='<h3>Функції</h3>'+F.map(f=>D(f[0],f.slice(1).map((x,i)=>`<p><b>${FL[i]}:</b> ${x}</p>`).join(''))).join('')+'<h3>Кнопки та дисплей</h3>'+B.map(b=>D(b[0],`<p>${b[1]}</p>`)).join('')+'<h3>Символи тахографа</h3>'+Y.map(y=>D(y[0]+' '+y[1],`<p><b>Символ:</b> ${y[0]}</p><p><b>Що означає:</b> ${y[2]}</p><p><b>На дисплеї:</b> ${y[3]}</p>`)).join('');
-render();setInterval(()=>{if(S.auto)S.sim+=1000;if(S.scr=='home')render()},1000);
+function reset(){if(confirm('Скинути симуляцію?')){if(S.scn)startScn(S.scn);else{const s=[S.snd,S.dark];S=fresh();[S.snd,S.dark]=s;man=null;render();tab(0)}}}
+function resetAll(){if(confirm('Скинути все навчання?')){try{localStorage.removeItem(K)}catch(e){}S=fresh();man=null;render();tab(0)}}
+const DT=(t,b)=>`<details><summary>${t}</summary>${b}</details>`;
+$('#hb').innerHTML='<h3>Кнопки та дисплей</h3>'+B.map(b=>DT(b[0],`<p>${b[1]}</p>`)).join('')+'<h3>Символи тахографа</h3>'+Y.map(y=>DT(I(y[0])+' '+y[1],`<p><b>Символ:</b> ${I(y[0],28)}</p><p><b>Назва:</b> ${y[1]}</p><p><b>Що означає:</b> ${y[2]}</p><p><b>На дисплеї:</b> ${y[3]}</p>`)).join('')+'<h3>Меню і функції</h3>'+F.map(f=>DT(f[0],f.slice(1).map((x,i)=>`<p><b>${FL[i]}:</b> ${x}</p>`).join(''))).join('');
+const WD=['Нд','Пн','Вт','Ср','Чт','Пт','Сб'],WD2=['Неділя','Понеділок','Вівторок','Середа','Четвер',"П'ятниця",'Субота'];
+const ER=[
+['q','Знак ? (невизначений період)','Символ ? означає, що для частини часу немає записаної діяльності.','Карту вилучили, а після вставлення на «Ручне введення?» відповіли «Ні».','Дату й час останнього вилучення карти та поточний час.','Внесіть період: Меню → Введення → Водій → Ручне введення (відпочинок, робота тощо).','Карту вилучили в п’ятницю, вставили в понеділок і пропустили введення.'],
+['card','Карта відсутня','Дія потребує вставленої карти водія.','Карту не вставлено або вже вилучено.','Слот і символ карти на головному екрані.','Вставте карту кнопкою Driver 1 / Driver 2.','Ручне введення без карти.'],
+['info','Країну не внесено','Початок або кінець країни показує «—».','Пропустили «Початок країни?» або «Кінець країни?».','Рядки В1 / В2 на головному екрані.','Меню → Введення → Водій → Початок країни / Кінець країни.','Карту вилучили без вибору кінця країни.'],
+['warn','Невірний час при введенні','Кінець періоду не може бути раніше початку або пізніше поточного часу.','Помилка в даті чи годинах.','Початок періоду та поточний час симулятора.','Поверніться до полів дати й часу та виправте.','Кінець після «зараз» → «Невірний час».'],
+['ferry','Пором/поїзд завершено автоматично','Функція завершилась сама.','Вилучили карту або водій у режимі «Керування» понад 1 хвилину.','Чи вилучали карту; режими водіїв.','Запустіть заново: Введення → Автомобіль → Пором / поїзд → Початок.','Заїхали на пором, але їхали понад хвилину.']];
+const EL=['Що означає','Можливі причини','Що перевірити','Що зробити','Приклад'];
+const t=(d,h,m)=>Date.UTC(2026,9,d,h,m),R1=[1,'rest'];
+const SC=[
+{id:'s1',lvl:1,title:'Перше вставлення карти',desc:'Нова карта водія 1, її ще не вилучали.',task:'Вставте карту, на «Ручне введення?» оберіть «Ні» й введіть початок країни: Польща.',start:{sim:t(5,7,0)},exp:{c:{1:2},sc:{1:'Польща'},log:[]},why:'Для нової карти немає незаписаного періоду, тому ручне введення не потрібне. Початок країни вносять на початку зміни.',sol:'Коротко натиснути Driver 1|Дочекатися «Зчитування картки» і «Ласкаво просимо»|OK на «Останнє вилучення»|«Ручне введення?» → Ні|«Початок країни?» → Так → Польща → OK'},
+{id:'s2',lvl:2,title:'Після звичайного відпочинку',desc:'Карту вилучили в п’ятницю о 18:30. Тепер субота 06:30. Весь час водій відпочивав.',task:'Вставте карту й внесіть відпочинок за весь період. Країна початку: Польща.',start:{sim:t(3,6,30),d:[{last:t(2,18,30)}]},exp:{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'rest',t(2,18,30),t(3,6,30)]]},why:'Увесь період між вилученням і вставленням треба закрити діяльністю, інакше залишиться період без запису (?).',sol:'Вставити карту → OK → «Ручне введення?» → Так|Діяльність: Відпочинок → OK|Кінець: 03.10.2026 06:30 (за замовчуванням) → OK до кінця полів|Підтвердити період → OK|Країна: Польща → OK'},
+{id:'s3',lvl:2,title:'Після двох днів відпочинку',desc:'Карту вилучили в п’ятницю 18:30. Водій відпочивав до понеділка 07:00.',task:'Вставте карту, внесіть відпочинок за весь період. Країна: Німеччина.',start:{sim:t(5,7,0),d:[{last:t(2,18,30)}]},exp:{c:{1:2},sc:{1:'Німеччина'},unk:{1:0},log:[[1,'rest',t(2,18,30),t(5,7,0)]]},why:'Довга перерва вносяться одним періодом відпочинку — від вилучення до вставлення.',sol:'Вставити карту → OK → Так|Відпочинок → OK|Кінець 05.10.2026 07:00 → OK|Підтвердити|Країна: Німеччина → OK'},
+{id:'s4',lvl:3,title:'Кілька періодів',desc:'Вилучення 18:00. Далі: 18:00–18:30 інша робота, 18:30–19:00 доступність, 19:00–07:00 відпочинок.',task:'Внесіть усі три періоди окремо. Країна: Польща.',start:{sim:t(3,7,0),d:[{last:t(2,18,0)}]},exp:{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'work',t(2,18,0),t(2,18,30)],[1,'avail',t(2,18,30),t(2,19,0)],[1,'rest',t(2,19,0),t(3,7,0)]]},why:'Кожен період вноситься окремо: вибираєте діяльність і кінець періоду, початок наступного дорівнює кінцю попереднього.',sol:'Так на «Ручне введення?»|Інша робота, кінець 02.10 18:30 → підтвердити|Доступність, кінець 02.10 19:00 → підтвердити|Відпочинок, кінець 03.10 07:00 → підтвердити|Країна: Польща'},
+{id:'s5',lvl:3,title:'Ручне введення з доїздом',desc:'Вилучення 20:00. 20:00–20:30 водій їхав на базу (за умовою ситуації — інша робота), далі відпочивав до 07:00.',task:'Внесіть два періоди. Країна: Польща.',start:{sim:t(4,7,0),d:[{last:t(3,20,0)}]},exp:{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'work',t(3,20,0),t(3,20,30)],[1,'rest',t(3,20,30),t(4,7,0)]]},why:'У цій ситуації доїзд за умовою — інша робота. Як класифікувати доїзд у вашому випадку, перевіряйте за чинними правилами та інструкцією роботодавця.',sol:'Так на «Ручне введення?»|Інша робота, кінець 03.10 20:30 → підтвердити|Відпочинок, кінець 04.10 07:00 → підтвердити|Країна: Польща'},
+{id:'s6',lvl:2,title:'Ручне введення без доїзду',desc:'Вилучення 20:00. Водій одразу відпочивав до понеділка 07:00.',task:'Внесіть один період відпочинку. Країна: Польща.',start:{sim:t(5,7,0),d:[{last:t(3,20,0)}]},exp:{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'rest',t(3,20,0),t(5,7,0)]]},why:'Без доїзду весь період одна діяльність — відпочинок.',sol:'Так на «Ручне введення?»|Відпочинок, кінець 05.10 07:00|Підтвердити|Країна: Польща'},
+{id:'s7',lvl:1,title:'Кінець країни при вилученні',desc:'Водій 1 закінчує зміну в Німеччині.',task:'Вилучіть карту водія 1 і внесіть кінець країни: Німеччина.',start:{sim:t(3,20,0),d:[{c:2,mode:'work',sc:'Польща'}]},exp:{c:{1:0},ec:{1:'Німеччина'}},why:'Кінець країни вносять під час вилучення карти.',sol:'Утримувати Driver 1 понад 2 секунди|«Кінець країни?» → Так|Німеччина → OK'},
+{id:'s8',lvl:4,title:'Забута країна',desc:'Карта вставлена, але початок країни не введено (на екрані «—»).',task:'Внесіть початок країни: Чехія — через меню.',start:{sim:t(5,7,0),d:[{c:2,mode:'rest'}]},exp:{sc:{1:'Чехія'}},why:'Країну можна внести й пізніше через меню.',sol:'OK → Введення → Водій 1|Початок країни → Чехія → OK'},
+{id:'s9',lvl:4,title:'Знак ? і невизначений період',desc:'Карту вилучили 02.10 20:00 і вставили 03.10 08:00. Ручне введення пропущено, на екрані знак ?.',task:'Виправте: внесіть відпочинок за пропущений період.',start:{sim:t(3,8,0),d:[{c:2,last:t(2,20,0),unk:1}]},exp:{unk:{1:0},log:[[1,'rest',t(2,20,0),t(3,8,0)]]},why:'Знак ? прибирається, коли весь період закрито діяльністю.',sol:'OK → Введення → Водій 1 → Ручне введення|Відпочинок, кінець 03.10 08:00 → підтвердити|Країна → OK'},
+{id:'s10',lvl:5,title:'Пором / поїзд',desc:'Водій 1 на місці, автомобіль заїжджає на пором.',task:'Запустіть пором/поїзд, потім завершіть.',start:{sim:t(3,12,0),d:[{c:2,mode:'work',sc:'Франція'}]},exp:{ferry:0,fs:1},why:'Початок і кінець вносяться окремо в меню автомобіля.',sol:'OK → Введення → Автомобіль → Пором / поїзд → Початок|Те саме меню → Кінець'},
+{id:'s11',lvl:5,title:'Два водії: зміна',desc:'Водій 1 керує, водій 2 відпочиває.',task:'Поміняйте: водій 1 — відпочинок, водій 2 — керування.',start:{sim:t(3,12,0),d:[{c:2,mode:'drive'},{c:2,mode:'rest'}]},exp:{mode:{1:'rest',2:'drive'}},why:'Діяльність кожного водія змінюється своєю кнопкою.',sol:'Driver 1 (коротко) → Відпочинок → OK|Driver 2 (коротко) → Керування → OK'},
+{id:'s12',lvl:4,title:'Неправильна країна',desc:'Початок країни помилково вказано Латвія, а треба Литва.',task:'Виправте початок країни на Литва.',start:{sim:t(3,8,0),d:[{c:2,mode:'rest',sc:'Латвія'}]},exp:{sc:{1:'Литва'}},why:'Помилкову країну виправляють повторним введенням.',sol:'OK → Введення → Водій 1|Початок країни → Литва → OK'}];
+function evalScn(c){const e=c.exp,r=[],mg=l=>{const o=[];for(const x of l){const q=o[o.length-1];if(q&&q.n==x.n&&q.a==x.a&&q.t==x.f)q.t=x.t;else o.push({...x})}return o},ds=l=>l.map(x=>`В${x.n} ${N[x.a]} ${fmt(x.f)}→${fmt(x.t)}`).join('; ')||'нічого';
+if(e.log){const g=mg(S.log),w=mg(e.log.map(([n,a,f,t])=>({n,a,f,t})));r.push(['Періоди ручного введення',JSON.stringify(g)==JSON.stringify(w),'введено: '+ds(g)+'. Потрібно: '+ds(w)])}
+const ck=(o,lb,fn,pv)=>{for(const n in o||{}){const v=fn(+n);r.push([lb+' водія '+n,o[n]=='*'?!!v:v==o[n],'зараз: '+pv(v)+'; потрібно: '+pv(o[n])])}},id=x=>x||'—';
+ck(e.c,'Карта',n=>D(n).c,v=>v==2?'вставлена':'немає');ck(e.sc,'Початок країни',n=>D(n).sc,id);ck(e.ec,'Кінець країни',n=>D(n).ec,id);ck(e.mode,'Діяльність',n=>D(n).mode,v=>N[v]);ck(e.unk,'Знак ?',n=>D(n).unk?1:0,v=>v?'є':'немає');
+if(e.er)r.push(['Попередження про невірний час побачено',S.er>=e.er,'спробуйте вказати невірний кінець періоду']);if('ferry'in e)r.push(['Пором/поїзд завершено',S.ferry==e.ferry,'пором ще активний']);if('fs'in e)r.push(['Пором/поїзд запускався',S.fs>=e.fs,'початок не вносився']);
+return r}
+function startScn(id){const c=SC.find(x=>x.id==id),st=c.start,free=S.scn?S.free:JSON.stringify(S),n2=st.rel?JSON.parse(JSON.stringify(S)):fresh();if(!st.rel){n2.sim=st.sim;n2.auto=0;n2.snd=S.snd;n2.dark=S.dark}[1,2].forEach(n=>{const o={...((st.d||[])[n-1]||{})};if(o.lastAgo){o.last=n2.sim-o.lastAgo;delete o.lastAgo}Object.assign(n2.d[n],o)});if('ferry'in st){n2.ferry=st.ferry;n2.fs=st.ferry}n2.log=[];n2.er=0;n2.scn=id;n2.free=free;n2.scr='home';n2.ej=0;S=n2;man=null;if(st.man){startMan(1,'home');man.f[2]=2020;man.s=6}render();tab(0)}
+function exitScn(){if(S.scn){S=JSON.parse(S.free);man=null;render()}tab(0)}
+function mdl(h,b){$('#mt').textContent=h;$('#ms').innerHTML=b;$('#mod').classList.add('on')}
+function chk(){const c=SC.find(x=>x.id==S.scn);if(!c)return;const r=evalScn(c),g=r.filter(x=>x[1]).length;mdl('Результат',(r.length?r.map(x=>`<b>${x[1]?'Так':'Ні'}</b> — ${x[0]}${x[1]?'':'<br><small>'+x[2]+'</small>'}`).join('<br>')+`<br><br>Виконано перевірок: ${g} з ${r.length}. ${g==r.length?'Ситуацію завершено.':'Є моменти, які потрібно виправити: '+(r.length-g)+'.'}`:'Це спостереження: перевірок немає.')+`<br><br><b>Пояснення:</b> ${c.why}<br><small>${LG}</small><br><button onclick="fix()">Спробувати ще раз</button> <button onclick="sol()">Показати рішення</button> <button onclick="rep()">Повторити спочатку</button>`)}
+function sol(){const c=SC.find(x=>x.id==S.scn);if(c)mdl('Правильна послідовність','<ol>'+c.sol.split('|').map(x=>'<li>'+x+'</li>').join('')+'</ol>')}
+function rep(){if(S.scn)startScn(S.scn)}
+function shift(ms){S.sim+=ms;if(S.ferry&&drv()&&ms>0&&(S.fd+=ms/1e3)>=60)endFerry(1);render()}
+function mkSit(k){if(k==3){S.d[1].c==2&&eject(1);S.sim+=864e5}else D(k).c==2?eject(k):say('Немає карти',1);render()}
+function ui(){const c=S.scn&&SC.find(x=>x.id==S.scn),b=$('#bn');b.style.display=c?'block':'none';if(c)$('#bt2').innerHTML='<b>'+c.title+'</b><br>'+c.task;$('#tn').textContent=WD2[new Date(S.sim).getUTCDay()]+' '+fmt()}
+
+$('#hb').innerHTML+='<h3>Помилки та повідомлення (навчальна симуляція)</h3><p><i>Це навчальні пояснення, а не реальні коди VDO.</i></p>'+ER.map(e=>DT(I(e[0])+' '+e[1],e.slice(2).map((x,i)=>`<p><b>${EL[i]}:</b> ${x}</p>`).join(''))).join('');
+const LG='Навчальна симуляція. Конкретні правові вимоги перевіряйте за чинними правилами та офіційними інструкціями.',EM=['e2','e5','e1','e4','e3'];
+const CAT={s1:'Базові',s7:'Базові',s2:'Ручне введення',s3:'Ручне введення',s4:'Ручне введення',s5:'Ручне введення',s6:'Ручне введення',s8:'Помилки',s9:'Помилки',s10:'Пором / поїзд',s11:'Два водії',s12:'Помилки'};
+SC.forEach(c=>c.cat=CAT[c.id]);
+const A=(id,cat,lvl,title,desc,task,start,exp,why,sol)=>SC.push({id,cat,lvl,title,desc,task,start,exp,why,sol}),RB='Вставити карту → Так на «Ручне введення?»';
+A('s13','Ручне введення',2,'Два дні відпочинку без карти','П’ятниця 20:00 — карту вилучено. Субота й неділя — відпочинок. Понеділок 07:00 — карту вставлено.','Внесіть весь період як відпочинок. Країна: Польща.',{sim:t(5,7,0),d:[{last:t(2,20,0)}]},{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'rest',t(2,20,0),t(5,7,0)]]},'Увесь час між вилученням і вставленням має бути закритий діяльністю, інакше лишиться ?.',RB+'|Відпочинок, кінець 05.10 07:00|Підтвердити|Країна: Польща');
+A('s14','Помилки',4,'Не закрив країну','Карту вилучили без кінця країни. Через два дні її вставляють знову.','Вставте карту, внесіть відпочинок. Потім виправте: кінець країни попередньої зміни — Німеччина, початок нової — Польща.',{sim:t(5,7,0),d:[{last:t(3,20,0),sc:'Польща'}]},{c:{1:2},unk:{1:0},ec:{1:'Німеччина'},sc:{1:'Польща'},log:[[1,'rest',t(3,20,0),t(5,7,0)]]},'Кінець країни вносять під час вилучення карти. Якщо забули, у симуляції його можна внести через Меню → Введення.',RB+'|Відпочинок до 05.10 07:00, країна Польща|OK → Введення → Водій 1 → Кінець країни → Німеччина');
+A('s15','Ручне введення',3,'Робота після вилучення карти','Карту вилучили о 18:00. До 18:30 водій виконував роботу (за умовою — інша робота). О 18:30 карту вставили.','Внесіть період. Країна: Польща.',{sim:t(3,18,30),d:[{last:t(3,18,0)}]},{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'work',t(3,18,0),t(3,18,30)]]},'Діяльність у період без карти вноситься вручну.',RB+'|Інша робота, кінець 03.10 18:30|Підтвердити|Країна: Польща');
+A('s16','Ручне введення',2,'Відпочинок після вилучення карти','Вилучення 22:00. Відпочинок до 06:00.','Внесіть відпочинок. Країна: Польща.',{sim:t(4,6,0),d:[{last:t(3,22,0)}]},{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'rest',t(3,22,0),t(4,6,0)]]},'Один період — одна діяльність.',RB+'|Відпочинок, кінець 04.10 06:00|Підтвердити|Країна: Польща');
+A('s17','Помилки',4,'Неправильний час ручного введення','Вилучення 20:00, зараз 07:00 наступного дня.','Спершу вкажіть кінець періоду пізніше поточного часу (побачите попередження), потім виправте на 07:00. Діяльність: відпочинок. Країна: Польща.',{sim:t(4,7,0),d:[{last:t(3,20,0)}]},{er:1,c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'rest',t(3,20,0),t(4,7,0)]]},'Кінець періоду не може бути пізніше поточного часу або раніше початку. Тахограф показує попередження й повертає до полів часу.',RB+'|Відпочинок, кінець 04.10 12:00 → «Невірний час»|Виправити годину на 07 → підтвердити|Країна: Польща');
+A('s18','Помилки',4,'Спроба виправити знак ?','Карту вилучили 02.10 20:00, зараз 03.10 08:00.','Вставте карту, на «Ручне введення?» і «Початок країни?» оберіть «Ні» (з’явиться ?), потім виправте через меню.',{sim:t(3,8,0),d:[{last:t(2,20,0)}]},{c:{1:2},unk:{1:0},log:[[1,'rest',t(2,20,0),t(3,8,0)]]},'? лишається, доки період без діяльності. Його закривають ручним введенням.','Вставити карту → Ні → Ні|OK → Введення → Водій 1 → Ручне введення|Відпочинок, кінець 03.10 08:00|Підтвердити → країна');
+A('s19','Пором / поїзд',5,'Ferry + відпочинок','Водій у режимі відпочинку, авто на пороми.','Запустіть і завершіть пором/поїзд.',{sim:t(3,12,0),d:[{c:2,mode:'rest',sc:'Франція'}]},{ferry:0,fs:1,mode:{1:'rest'}},'Початок і кінець вносяться окремо; діяльність водія не змінюється.','Меню → Введення → Автомобіль → Пором / поїзд → Початок|Те саме меню → Кінець');
+A('s20','Пором / поїзд',5,'Ferry + керування','Пором активний, водій починає рух.','Запустіть пором, увімкніть «Керування», у ПРАКТИКА перемотайте +1 год. Пором має завершитись сам.',{sim:t(3,12,0),d:[{c:2,mode:'work',sc:'Франція'}]},{ferry:0,fs:1,mode:{1:'drive'}},'За умовами симуляції пором завершується сам після руху понад 1 хвилину.','Пором / поїзд → Початок|Driver 1 → Керування → OK|ПРАКТИКА → +1 год');
+A('s21','Пором / поїзд',5,'Вилучення карти під час ferry','Пором активний, водій закінчує зміну.','Вилучіть карту, кінець країни: Франція.',{sim:t(3,12,0),d:[{c:2,mode:'rest',sc:'Франція'}],ferry:1},{c:{1:0},ferry:0,ec:{1:'Франція'}},'Вилучення карти завершує пором/поїзд.','Утримувати Driver 1 понад 2 секунди|Кінець країни → Так → Франція → OK');
+A('s22','Два водії',5,'Driver 2 керує, Driver 1 відпочиває','Водій 1 відпочиває. Карту водія 2 вилучили 06:00, зараз 08:00.','Вставте карту 2, внесіть відпочинок 06:00–08:00, країна Чехія, потім Driver 2 → «Керування».',{sim:t(3,8,0),d:[{c:2,mode:'rest',sc:'Польща'},{last:t(3,6,0)}]},{c:{2:2},sc:{2:'Чехія'},mode:{1:'rest',2:'drive'},log:[[2,'rest',t(3,6,0),t(3,8,0)]]},'Дані кожного водія окремі: карта, діяльність і країни.','Коротко Driver 2 → Так на введення|Відпочинок до 08:00, країна Чехія|Driver 2 → Керування → OK');
+A('s23','Два водії',5,'Зміна водія','Водій 1 закінчує, водій 2 починає керувати.','Вилучіть карту 1 (кінець: Польща), Driver 2 → «Керування».',{sim:t(3,12,0),d:[{c:2,mode:'drive',sc:'Польща'},{c:2,mode:'rest'}]},{c:{1:0},ec:{1:'Польща'},mode:{2:'drive'}},'Кожен водій працює зі своєю кнопкою.','Утримувати Driver 1 → Так → Польща|Driver 2 → Керування');
+A('s24','Помилки',4,'Не введена країна','Карта вставляється, початок країни пропущено.','Вставте карту, оберіть «Ні» двічі, змініть діяльність на «Інша робота». Потім виправте: початок країни Польща.',{sim:t(5,7,0)},{c:{1:2},sc:{1:'Польща'},mode:{1:'work'}},'Тахограф дозволяє працювати без країни, але дані неповні (на екрані «—»).','Вставити → Ні → Ні|Driver 1 → Інша робота|OK → Введення → Водій 1 → Початок країни → Польща');
+A('s25','Помилки',4,'Пропущений період','Частину періоду (02:00–08:00) не внесено.','Внесіть 02:00–08:00 як відпочинок.',{sim:t(3,8,0),d:[{c:2,last:t(3,2,0),unk:1}]},{unk:{1:0},log:[[1,'rest',t(3,2,0),t(3,8,0)]]},'Незакритий період дає ?.','OK → Введення → Водій 1 → Ручне введення|Відпочинок, кінець 03.10 08:00|Підтвердити');
+A('s26','Ручне введення',3,'Вставлення після тривалого періоду','Карту вилучили 28.09 18:00, вставили 05.10 07:00.','Внесіть весь період як відпочинок. Країна: Польща.',{sim:t(5,7,0),d:[{last:t(-2,18,0)}]},{c:{1:2},sc:{1:'Польща'},unk:{1:0},log:[[1,'rest',t(-2,18,0),t(5,7,0)]]},'Довгий період вносять так само, одним або кількома періодами.',RB+'|Відпочинок, кінець 05.10 07:00|Підтвердити|Країна: Польща');
+A('s27','Ручне введення',5,'Повна комбінована ситуація','Зміну завершили 03.10 18:00 без кінця країни. 18:00–18:30 доїзд (за умовою — інша робота), далі відпочинок. Карту вставили 05.10 07:00.','Внесіть обидва періоди, країну початку Польща, виправте кінець країни попередньої зміни (Німеччина), розпочніть роботу («Інша робота»).',{sim:t(5,7,0),d:[{last:t(3,18,0),sc:'Польща'}]},{c:{1:2},unk:{1:0},ec:{1:'Німеччина'},sc:{1:'Польща'},mode:{1:'work'},log:[[1,'work',t(3,18,0),t(3,18,30)],[1,'rest',t(3,18,30),t(5,7,0)]]},'Це комбінація: періоди, країни й початок нової роботи. Класифікацію доїзду задано умовою.',RB+'|Інша робота до 03.10 18:30|Відпочинок до 05.10 07:00|Країна Польща|OK → Введення → Водій 1 → Кінець країни → Німеччина|Driver 1 → Інша робота');
+const E=(id,title,desc,task,d,exp,why,sol,extra)=>A(id,'Помилки',4,title,desc,task,{rel:1,d,...extra},exp,why,sol);
+E('e1','Помилка: не введено країну','Карта є, початок країни — «—».','Внесіть початок країни.',[{c:2,mode:'work',sc:''}],{sc:{1:'*'}},'Країну можна внести через меню.','OK → Введення → Водій 1 → Початок країни');
+E('e2','Помилка: невизначений період ?','Період без діяльності, біля символу водія знак ?.','Закрийте період ручним введенням.',[{c:2,lastAgo:432e5,unk:1}],{unk:{1:0}},'? зникає, коли період закрито.','OK → Введення → Водій 1 → Ручне введення|Діяльність, кінець = зараз|Підтвердити');
+E('e3','Помилка: незавершений ferry','Пором/поїзд активний, хоча він завершився.','Завершіть пором/поїзд.',[{c:2,mode:'rest'}],{ferry:0},'Кінець вносять окремо.','Введення → Автомобіль → Пором / поїзд → Кінець',{ferry:1});
+E('e4','Помилка: невірний час','Ручне введення з неправильним кінцем періоду.','Виправте кінець періоду та завершіть введення.',[{c:2,lastAgo:108e5,unk:1}],{er:1,unk:{1:0}},'Кінець не раніше початку й не пізніше «зараз».','Виправити рік/дату на поточні|Підтвердити період|Країна',{man:1});
+E('e5','Помилка: карта вилучена','Карту вилучили, діяльність не пишеться.','Вставте карту знову й закрийте період.',[{c:0,lastAgo:36e5}],{c:{1:2},unk:{1:0}},'Без карти немає запису на карту.','Driver 1 → Так → введення періоду');
+const W=(id,q,task,d,why,extra)=>A(id,'Що буде, якщо…',0,q,'Спробуйте на практиці.',task,{rel:1,d,...extra},{},why+' '+LG,'Виконайте дію з завдання на тахографі.');
+W('w1','Що буде, якщо не ввести країну?','Продовжуйте без країни: змініть діяльність, перемотайте час.',[{c:2,mode:'work',sc:''}],'Тахограф працює, але на екрані лишається «—». Країну можна внести пізніше через Введення.');
+W('w2','Що буде, якщо витягнути карту?','Утримуйте Driver 1 понад 2 секунди.',[{c:2,mode:'work'}],'Тахограф запитає кінець країни й вилучить карту; водій 1 стане без карти, час останнього вилучення запам’ятається.');
+W('w3','Що буде, якщо вставити карту через два дні?','Вставте карту, оберіть «Ні» на введення.',[{c:0,lastAgo:1728e5}],'Тахограф покаже останнє вилучення й запропонує ручне введення. Без введення з’явиться ?.');
+W('w4','Що буде, якщо не зробити ручне введення?','Вставте карту й оберіть «Ні».',[{c:0,lastAgo:432e5}],'Період лишається без діяльності — біля символу водія знак ?.');
+W('w5','Що буде, якщо ввести неправильний час?','Підтвердіть період.',[{c:2,lastAgo:108e5}],'Тахограф покаже «Невірний час» і поверне до полів часу.',{man:1});
+W('w6','Що буде, якщо період залишиться невизначеним?','Дивіться на екран, перемотайте +1 день.',[{c:2,lastAgo:432e5,unk:1}],'Знак ? лишається, доки період не закрито ручним введенням.');
+W('w7','Що буде, якщо неправильно завершити ferry?','Вилучіть карту під час активного ferry.',[{c:2,mode:'rest'}],'Пором/поїзд завершиться при вилученні карти. Рух водія понад хвилину теж завершує його. Правові вимоги — за чинними правилами.',{ferry:1});
+
+function what(){const c=SC.find(x=>x.id==S.scn);if(c)mdl('Що сталося?',c.desc+(c.cat=='Помилки'||c.lvl==0?'<br><br>'+c.why:'')+'<br><small>'+LG+'</small>')}
+function fix(){$('#mod').classList.remove('on');tab(0)}
+const drv=()=>[1,2].some(n=>D(n).c==2&&D(n).mode=='drive');
+function mkState(){if(S.scn)exitScn();const v=Date.parse($('#cdt').value+':00Z'),n=+$('#cdr').value,d=D(n);if(!isNaN(v))S.sim=v;d.c=+$('#ccd').value;d.mode=$('#cac').value;d.sc=$('#ccn').value;d.unk=0;if(!d.c)d.last=S.sim;S.scr='home';S.ferry=0;render();tab(0)}
+function buildSc(){$('#sl').innerHTML='<div class=set>Вільна практика (без завдання)<button onclick=exitScn()>Відкрити</button></div>'+[...new Set(SC.filter(c=>c.id[0]!='e').map(c=>c.cat))].map(k=>'<h3>'+k+'</h3>'+SC.filter(c=>c.cat==k&&c.id[0]!='e').map(c=>`<div class=set><span><b>${c.title}</b><br><small>${c.lvl?'Рівень '+c.lvl+'. ':''}${c.desc}</small></span><button onclick="startScn('${c.id}')">Почати</button></div>`).join('')).join('');
+$('#el').innerHTML='<p><i>Навчальна симуляція: це пояснення, а не реальні коди VDO.</i></p>'+ER.map((e,i)=>DT(I(e[0])+' '+e[1],[2,3,6,4,5].map((j,k)=>`<p><b>${['Що означає','Можливі причини','Приклад ситуації','Що перевірити','Як навчитися виправляти'][k]}:</b> ${e[j]}</p>`).join('')+`<p><button onclick="startScn('${EM[i]}')">Створити цю помилку на тахографі</button></p>`)).join('');
+$('#ccn').innerHTML='<option value="">Країна не введена</option>'+CN.map(x=>`<option>${x}</option>`).join('')}
+buildSc();
+bind('#d1',1);bind('#d2',2);bind('#sl1',1);bind('#sl2',2);
+render();setInterval(()=>{if(S.auto)S.sim+=1000;if(S.ferry&&drv()){if(++S.fd>=60)endFerry(1)}else S.fd=0;if(S.scr=='home')render()},1000);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+
 </script></body></html>
