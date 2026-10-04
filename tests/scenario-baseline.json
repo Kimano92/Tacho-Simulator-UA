@@ -1,0 +1,202 @@
+{
+ "source": "Phase 0 (pre-engine) index.html",
+ "scenarios": 39,
+ "totalRows": 97,
+ "byId": {
+  "s1": {
+   "rows": 3,
+   "exp": "9380fd6e8f3a",
+   "start": "633e6c40dfb2"
+  },
+  "s2": {
+   "rows": 4,
+   "exp": "32f3478e5e07",
+   "start": "2b98c7ec4986"
+  },
+  "s3": {
+   "rows": 4,
+   "exp": "d4f59891d8bb",
+   "start": "7f4b84774077"
+  },
+  "s4": {
+   "rows": 4,
+   "exp": "8b12e6db7c71",
+   "start": "7fec2d0484c4"
+  },
+  "s5": {
+   "rows": 4,
+   "exp": "f9dcacdb88bd",
+   "start": "71c725264cc1"
+  },
+  "s6": {
+   "rows": 4,
+   "exp": "249a72b778a9",
+   "start": "93d8392c41f9"
+  },
+  "s7": {
+   "rows": 2,
+   "exp": "fedd9dbf4586",
+   "start": "228369e43c81"
+  },
+  "s8": {
+   "rows": 1,
+   "exp": "1be5350986e6",
+   "start": "d7df3b943d90"
+  },
+  "s9": {
+   "rows": 2,
+   "exp": "e201a7050010",
+   "start": "9072fadb963f"
+  },
+  "s10": {
+   "rows": 2,
+   "exp": "459f346528bd",
+   "start": "c07a399a450d"
+  },
+  "s11": {
+   "rows": 2,
+   "exp": "ac7eb2e9f0f1",
+   "start": "f628a1b15374"
+  },
+  "s12": {
+   "rows": 1,
+   "exp": "717068355132",
+   "start": "f6a75981235a"
+  },
+  "s13": {
+   "rows": 4,
+   "exp": "f2f8b1b075b7",
+   "start": "035d689d7033"
+  },
+  "s14": {
+   "rows": 5,
+   "exp": "c8a7a6a39a9e",
+   "start": "f3bd41ec0980"
+  },
+  "s15": {
+   "rows": 4,
+   "exp": "4d78847cc3c1",
+   "start": "9ef2db99d751"
+  },
+  "s16": {
+   "rows": 4,
+   "exp": "736b53460b06",
+   "start": "5cff1a23d3ea"
+  },
+  "s17": {
+   "rows": 5,
+   "exp": "0639bef22737",
+   "start": "71c725264cc1"
+  },
+  "s18": {
+   "rows": 3,
+   "exp": "d1eb2e365147",
+   "start": "150f5d0b7205"
+  },
+  "s19": {
+   "rows": 3,
+   "exp": "5d3794d42a70",
+   "start": "d4ab7e39bf5b"
+  },
+  "s20": {
+   "rows": 3,
+   "exp": "9476ed505012",
+   "start": "c07a399a450d"
+  },
+  "s21": {
+   "rows": 3,
+   "exp": "cfaae7024670",
+   "start": "b0d379c4cdc2"
+  },
+  "s22": {
+   "rows": 5,
+   "exp": "8603cdc69cec",
+   "start": "387b476ca96c"
+  },
+  "s23": {
+   "rows": 3,
+   "exp": "dcc77ee4fcb4",
+   "start": "5a6102332855"
+  },
+  "s24": {
+   "rows": 3,
+   "exp": "4f870c5881b2",
+   "start": "633e6c40dfb2"
+  },
+  "s25": {
+   "rows": 2,
+   "exp": "5d70c0aa6c95",
+   "start": "1f69ad5dfe07"
+  },
+  "s26": {
+   "rows": 4,
+   "exp": "0062df7781e8",
+   "start": "066f61476e5b"
+  },
+  "s27": {
+   "rows": 6,
+   "exp": "58361ff840d8",
+   "start": "5cbebb3e81cb"
+  },
+  "e1": {
+   "rows": 1,
+   "exp": "7938dff19d75",
+   "start": "218a092d0bd8"
+  },
+  "e2": {
+   "rows": 1,
+   "exp": "7ed61a77edbc",
+   "start": "b64ab8535742"
+  },
+  "e3": {
+   "rows": 1,
+   "exp": "aa2f5ec2f382",
+   "start": "b9200081c7e7"
+  },
+  "e4": {
+   "rows": 2,
+   "exp": "539f68531b84",
+   "start": "f3215affa735"
+  },
+  "e5": {
+   "rows": 2,
+   "exp": "10829f4192a0",
+   "start": "452a8493d12b"
+  },
+  "w1": {
+   "rows": 0,
+   "exp": "bf21a9e8fbc5",
+   "start": "218a092d0bd8"
+  },
+  "w2": {
+   "rows": 0,
+   "exp": "bf21a9e8fbc5",
+   "start": "ebb7242ecffb"
+  },
+  "w3": {
+   "rows": 0,
+   "exp": "bf21a9e8fbc5",
+   "start": "20174f8f22c4"
+  },
+  "w4": {
+   "rows": 0,
+   "exp": "bf21a9e8fbc5",
+   "start": "a466e3fd09fd"
+  },
+  "w5": {
+   "rows": 0,
+   "exp": "bf21a9e8fbc5",
+   "start": "3ab2b5499ad9"
+  },
+  "w6": {
+   "rows": 0,
+   "exp": "bf21a9e8fbc5",
+   "start": "b64ab8535742"
+  },
+  "w7": {
+   "rows": 0,
+   "exp": "bf21a9e8fbc5",
+   "start": "b9200081c7e7"
+  }
+ }
+}
